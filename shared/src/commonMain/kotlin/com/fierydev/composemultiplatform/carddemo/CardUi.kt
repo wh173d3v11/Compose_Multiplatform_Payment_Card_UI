@@ -9,6 +9,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.CreditCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -17,8 +19,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import com.fierydev.composemultiplatform.shared.getPlatform
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
@@ -84,7 +88,7 @@ fun CardViewFrontAndBack(
             shadowElevation = 10.dp
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
-                if (isFront){
+                if (isFront) {
                     Column(
                         modifier = Modifier.padding(16.dp).fillMaxSize()
                     ) {
@@ -92,11 +96,23 @@ fun CardViewFrontAndBack(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Image(
-                                painter = painterResource(res = "card_symbol.png"),
-                                contentDescription = "Visa Logo",
-                                modifier = Modifier.size(40.dp)
-                            )
+                            if (!getPlatform().isIosPlatform) {
+                                //since we using Regular Framework for iOs, it's difficult to use image.
+                                //if we use cocopods, we can easily add this shared module folder in pod file.
+                                Image(
+                                    painter = painterResource(res = "card_symbol.png"),
+                                    contentDescription = "Visa Logo",
+                                    modifier = Modifier.size(40.dp)
+                                )
+                            } else {
+                                Image(
+                                    imageVector = Icons.Outlined.CreditCard,
+                                    colorFilter = ColorFilter.tint(Color.White),
+                                    contentDescription = "Visa Logo",
+                                    modifier = Modifier.size(40.dp)
+                                )
+                            }
+
                             Text(
                                 text = "VISA",
                                 style = MaterialTheme.typography.headlineSmall,
@@ -153,7 +169,7 @@ fun CardViewFrontAndBack(
                             }
                         }
                     }
-                }else{
+                } else {
                     Column(
                         modifier = Modifier.fillMaxSize(),
                         verticalArrangement = Arrangement.Center

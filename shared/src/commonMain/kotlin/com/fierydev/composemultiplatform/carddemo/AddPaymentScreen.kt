@@ -1,8 +1,6 @@
 package com.fierydev.composemultiplatform.carddemo
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -45,93 +43,84 @@ fun AddPaymentScreen() {
     var isCardShowing by remember { mutableStateOf(false) }
 
     Scaffold { paddingValues ->
-        Column(
+        LazyColumn(
             modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize()
+                .padding(16.dp)
+                .fillMaxWidth()
         ) {
-            LazyColumn(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth()
-            ) {
-
-                item {
-                    Row(
-                        modifier = Modifier.padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "Show Card Details", modifier = Modifier.weight(1f).padding(end = 8.dp)
-                        )
-                        Switch(
-                            checked = isCardShowing,
-                            onCheckedChange = { isCardShowing = it },
-                            modifier = Modifier.padding(8.dp)
-                        )
-                    }
-                }
-
-                item {
-                    CardUi(
-                        nameText,
-                        cardNumber,
-                        expiryNumber,
-                        cvcNumber,
-                        isCardShowing
+            item {
+                Row(
+                    modifier = Modifier.padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Show Card Details",
+                        modifier = Modifier.weight(1f).padding(end = 8.dp)
+                    )
+                    Switch(
+                        checked = isCardShowing,
+                        onCheckedChange = { isCardShowing = it },
+                        modifier = Modifier.padding(8.dp)
                     )
                 }
+                CardUi(
+                    cardHolderName = nameText,
+                    cardNumber = cardNumber,
+                    expiryNumber = expiryNumber,
+                    cvcNumber = cvcNumber,
+                    isCardShowing = isCardShowing
+                )
+            }
 
-                item {
-                    CardInputTextField(
-                        textFieldValue = nameText,
-                        label = stringsLocal.card_holder_name,
-                        onTextChanged = { nameText = it },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp)
-                    )
-                }
+            item {
+                CardInputTextField(
+                    textFieldValue = nameText,
+                    label = stringsLocal.card_holder_name,
+                    onTextChanged = { nameText = it },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp)
+                )
+            }
 
-                item {
+            item {
+                CardInputTextField(
+                    textFieldValue = cardNumber,
+                    label = stringsLocal.card_holder_number,
+                    keyboardType = KeyboardType.Number,
+                    onTextChanged = { cardNumber = it },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
+                    visualTransformation = CreditCardFilter
+                )
+            }
+
+            item {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     CardInputTextField(
-                        textFieldValue = cardNumber,
-                        label = stringsLocal.card_holder_number,
+                        textFieldValue = expiryNumber,
+                        label = stringsLocal.expiry_date,
                         keyboardType = KeyboardType.Number,
-                        onTextChanged = { cardNumber = it },
+                        onTextChanged = { expiryNumber = it },
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp),
-                        visualTransformation = CreditCardFilter
+                            .weight(1f)
+                            .padding(end = 8.dp)
                     )
-                }
-
-                item {
-                    Row(
+                    CardInputTextField(
+                        textFieldValue = cvcNumber,
+                        label = stringsLocal.cvc,
+                        keyboardType = KeyboardType.Number,
+                        onTextChanged = { cvcNumber = it },
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        CardInputTextField(
-                            textFieldValue = expiryNumber,
-                            label = stringsLocal.expiry_date,
-                            keyboardType = KeyboardType.Number,
-                            onTextChanged = { expiryNumber = it },
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(end = 8.dp)
-                        )
-                        CardInputTextField(
-                            textFieldValue = cvcNumber,
-                            label = stringsLocal.cvc,
-                            keyboardType = KeyboardType.Number,
-                            onTextChanged = { cvcNumber = it },
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(start = 8.dp)
-                        )
-                    }
+                            .weight(1f)
+                            .padding(start = 8.dp)
+                    )
                 }
             }
         }
